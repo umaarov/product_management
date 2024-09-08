@@ -11,12 +11,14 @@ return new class extends Migration
         Schema::create('returns', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sale_id');
+            $table->integer('quantity');
             $table->text('reason');
             $table->timestamps();
 
             $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
         });
     }
+
 
     public function down(): void
     {
