@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Expense extends Model
 {
-    use HasFactory;
+    protected $fillable = ['amount', 'supplier_id'];
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
 }

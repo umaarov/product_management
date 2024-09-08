@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Refund extends Model
 {
-    use HasFactory;
+    protected $fillable = ['sale_id', 'reason'];
 
     public function sale()
     {
         return $this->belongsTo(Sale::class);
     }
 }
+

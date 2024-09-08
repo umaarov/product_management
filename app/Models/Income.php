@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Income extends Model
 {
-    use HasFactory;
+    protected $fillable = ['amount', 'sale_id'];
+
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class);
+    }
 }
