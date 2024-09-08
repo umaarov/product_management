@@ -21,13 +21,14 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients,email',
+            'phone' => 'required|string|max:15',
         ]);
 
-        Client::create($request->all());
-        return redirect()->route('clients.index');
+        Client::create($request->only(['name', 'email', 'phone']));
+
+        return redirect()->route('clients.index')->with('success', 'Client created successfully');
     }
 
     public function edit(Client $client)
@@ -37,20 +38,25 @@ class ClientController extends Controller
 
     public function update(Request $request, Client $client)
     {
-
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients,email,' . $client->id,
+            'phone' => 'required|string|max:15',
         ]);
 
-        $client->update($request->all());
-        return redirect()->route('clients.index');
+        $client->update($request->only(['name', 'email', 'phone']));
+
+        return redirect()->route('clients.index')->with('success', 'Client updated successfully');
     }
 
     public function destroy(Client $client)
     {
+        if ($client->sales()->count() > 0) {
+            return redirect()->route('clients.index')->withErrors('Cannot delete client with associated sales.');
+        }
+
         $client->delete();
-        return redirect()->route('clients.index');
+
+        return redirect()->route('clients.index')->with('success', 'Client deleted successfully');
     }
 }

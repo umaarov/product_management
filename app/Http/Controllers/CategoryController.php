@@ -20,8 +20,13 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        Category::create($request->all());
-        return redirect()->route('categories.index');
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+        ]);
+
+        Category::create($request->only(['name']));
+
+        return redirect()->route('categories.index')->with('success', 'Category created successfully');
     }
 
     public function edit(Category $category)
@@ -31,13 +36,23 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $category->update($request->all());
-        return redirect()->route('categories.index');
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+        ]);
+
+        $category->update($request->only(['name']));
+
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
     }
 
     public function destroy(Category $category)
     {
+        if ($category->products()->count() > 0) {
+            return redirect()->route('categories.index')->withErrors('Cannot delete a category with products.');
+        }
+
         $category->delete();
-        return redirect()->route('categories.index');
+
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
     }
 }

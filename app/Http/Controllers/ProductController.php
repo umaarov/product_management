@@ -24,8 +24,17 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        Product::create($request->all());
-        return redirect()->route('products.index');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'supplier_id' => 'required|exists:suppliers,id',
+        ]);
+
+        Product::create($request->only(['name', 'price', 'quantity', 'category_id', 'supplier_id']));
+
+        return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
 
     public function edit(Product $product)
@@ -37,13 +46,23 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $product->update($request->all());
-        return redirect()->route('products.index');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'supplier_id' => 'required|exists:suppliers,id',
+        ]);
+
+        $product->update($request->only(['name', 'price', 'quantity', 'category_id', 'supplier_id']));
+
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index');
+
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
 }
