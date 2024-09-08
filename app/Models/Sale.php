@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
-    protected $fillable = ['client_id', 'product_id', 'quantity', 'total_price'];
+    protected $fillable = ['client_id', 'product_id', 'quantity', 'total_price', 'status'];
 
     public function client()
     {
@@ -17,5 +17,10 @@ class Sale extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function refund()
+    {
+        return $this->hasOne(Refund::class);
     }
 }

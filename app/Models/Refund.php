@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Refund extends Model
 {
     protected $table = 'returns';
-    protected $fillable = ['sale_id', 'reason'];
+    protected $fillable = ['sale_id', 'reason', 'quantity'];
 
     public function sale()
     {
