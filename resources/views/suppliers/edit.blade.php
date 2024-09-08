@@ -9,8 +9,12 @@
         <label for="name">Supplier Name:</label>
         <input type="text" name="name" id="name" value="{{ $supplier->name }}">
 
-        <label for="contact">Contact Information:</label>
-        <input type="text" name="contact" id="contact" value="{{ $supplier->contact }}">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" value="{{ $supplier->email }}">
+
+        <label for="phone">Phone:</label>
+        <input type="text" name="phone" id="phone" value="{{ $supplier->phone }}">
+
 
         <button type="submit">Update Supplier</button>
     </form>

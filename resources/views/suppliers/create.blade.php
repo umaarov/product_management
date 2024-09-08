@@ -7,8 +7,11 @@
         <label for="name">Supplier Name:</label>
         <input type="text" name="name" id="name">
 
-        <label for="contact">Contact Information:</label>
-        <input type="text" name="contact" id="contact">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email">
+
+        <label for="phone">Phone:</label>
+        <input type="text" name="phone" id="phone">
 
         <button type="submit">Add Supplier</button>
     </form>
