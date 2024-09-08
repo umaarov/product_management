@@ -9,7 +9,7 @@
         <a href="{{ route('products.index') }}">Products</a>
         <a href="{{ route('clients.index') }}">Clients</a>
         <a href="{{ route('suppliers.index') }}">Suppliers</a>
-        <a href="{{ route('sales.index') }}">Sales</a>
+        <a href="{{ route('sales.index') }}">Sale</a>
         <a href="{{ route('returns.index') }}">Returns</a>
     </nav>
 
