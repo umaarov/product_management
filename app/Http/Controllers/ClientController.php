@@ -20,6 +20,12 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+        ]);
+
         Client::create($request->all());
         return redirect()->route('clients.index');
     }
@@ -31,6 +37,13 @@ class ClientController extends Controller
 
     public function update(Request $request, Client $client)
     {
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+        ]);
+
         $client->update($request->all());
         return redirect()->route('clients.index');
     }
