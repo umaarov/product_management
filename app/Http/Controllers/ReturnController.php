@@ -24,8 +24,6 @@ class ReturnController extends Controller
     {
         Refund::create($request->all());
 
-        // Refund logic here
-
         return redirect()->route('returns.index');
     }
 }

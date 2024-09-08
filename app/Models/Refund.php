@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Refund extends Model
 {
+    protected $table = 'returns';
     protected $fillable = ['sale_id', 'reason'];
 
     public function sale()
@@ -14,4 +15,3 @@ class Refund extends Model
         return $this->belongsTo(Sale::class);
     }
 }
-
