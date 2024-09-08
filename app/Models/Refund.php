@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Refund extends Model
 {
     use HasFactory;
+
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class);
+    }
 }
