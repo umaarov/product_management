@@ -27,6 +27,6 @@
             @endforeach
         </select>
 
-        <button type="submit">Create</button>
+        <button type="submit">Add supplier</button>
     </form>
 @endsection
