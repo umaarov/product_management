@@ -6,7 +6,6 @@
     <h2>General Summary</h2>
     <p><strong>Total Income:</strong> ${{ number_format($totalIncome, 2) }}</p>
     <p><strong>Total Expenses:</strong> ${{ number_format($totalExpenses, 2) }}</p>
-    <p><strong>Net Income:</strong> ${{ number_format($totalIncome - $totalExpenses, 2) }}</p>
 
     <h2>Client Summary</h2>
     <table border="1">

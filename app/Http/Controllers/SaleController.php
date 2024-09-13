@@ -45,7 +45,6 @@ class SaleController extends Controller
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
             'total_price' => $totalPrice,
-            'status' => 'completed',
         ]);
 
         $product->decrement('quantity', $request->quantity);
@@ -75,20 +74,6 @@ class SaleController extends Controller
 
         $sale->update(['status' => 'refunded']);
 
-        $income = Income::where('sale_id', $sale->id)->first();
-        $income->delete();
-
         return redirect()->route('sales.index')->with('success', 'Sale refunded successfully');
-    }
-
-    public function destroy(Sale $sale)
-    {
-        if ($sale->refund) {
-            return redirect()->route('sales.index')->withErrors('Cannot delete a sale with a refund.');
-        }
-
-        $sale->delete();
-
-        return redirect()->route('sales.index')->with('success', 'Sale deleted successfully');
     }
 }

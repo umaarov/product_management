@@ -12,13 +12,13 @@ class ReturnController extends Controller
 {
     public function index()
     {
-        $returns = Refund::with('sale')->get(); 
+        $returns = Refund::with('sale')->get();
         return view('returns.index', compact('returns'));
     }
 
     public function create()
     {
-        $sales = Sale::where('status', 'completed')->get(); 
+        $sales = Sale::where('status', 'completed')->get();
         return view('returns.create', compact('sales'));
     }
 

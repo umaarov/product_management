@@ -4,18 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Income;
 use App\Models\Expense;
-use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Client;
 use App\Models\Refund;
-use Illuminate\Http\Request;
 
 class AnalyticsController extends Controller
 {
     public function index()
     {
         $totalIncome = Income::sum('amount');
-        $totalExpenses = Expense::sum('amount');
+
+        $totalDirectExpenses = Expense::sum('amount');
+
+        $refundExpenses = Refund::with('sale.product')->get()->sum(function ($refund) {
+            return $refund->sale->product->price * $refund->quantity;
+        });
+
+        $totalExpenses = $totalDirectExpenses + $refundExpenses;
 
         $clientSummary = Client::with('sales')->get()->map(function ($client) {
             return [
@@ -33,7 +38,7 @@ class AnalyticsController extends Controller
             ];
         });
 
-        $refundSummary = Refund::with('sale')->get()->map(function ($refund) {
+        $refundSummary = Refund::with('sale.product')->get()->map(function ($refund) {
             return [
                 'sale_id' => $refund->sale_id,
                 'product' => $refund->sale->product->name,
