@@ -11,6 +11,7 @@
         <a href="{{ route('suppliers.index') }}">Suppliers</a>
         <a href="{{ route('sales.index') }}">Sale</a>
         <a href="{{ route('returns.index') }}">Returns</a>
+        <a href="{{ route('analytics.index') }}">Analytics</a>
     </nav>
 
     <div>

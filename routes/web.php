@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalyticsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -18,3 +19,4 @@ Route::resource('clients', ClientController::class);
 Route::resource('suppliers', SupplierController::class);
 Route::resource('sales', SaleController::class);
 Route::resource('returns', ReturnController::class);
+Route::resource('analytics', AnalyticsController::class);
