@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@vite('resources/css/suppliers/supplier.css')
 @section('content')
     <h1>Edit Supplier</h1>
     <form action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
@@ -14,7 +14,6 @@
 
         <label for="phone">Phone:</label>
         <input type="text" name="phone" id="phone" value="{{ $supplier->phone }}">
-
 
         <button type="submit">Update Supplier</button>
     </form>

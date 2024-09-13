@@ -7,7 +7,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Contact</th>
+                <th>Phone</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -15,7 +15,7 @@
             @foreach($clients as $client)
                 <tr>
                     <td>{{ $client->name }}</td>
-                    <td>{{ $client->contact }}</td>
+                    <td>{{ $client->email }}</td>
                     <td>
                         <a href="{{ route('clients.edit', $client->id) }}" class="edit-btn">Edit</a>
                         <form action="{{ route('clients.destroy', $client->id) }}" method="POST" style="display:inline;">

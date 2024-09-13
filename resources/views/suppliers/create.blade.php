@@ -1,9 +1,10 @@
 @extends('layouts.app')
-
+@vite('resources/css/suppliers/supplier.css')
 @section('content')
     <h1>Add Supplier</h1>
     <form action="{{ route('suppliers.store') }}" method="POST">
         @csrf
+
         <label for="name">Supplier Name:</label>
         <input type="text" name="name" id="name">
 
