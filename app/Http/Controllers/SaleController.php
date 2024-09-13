@@ -35,7 +35,7 @@ class SaleController extends Controller
         $product = Product::find($request->product_id);
 
         if ($product->quantity < $request->quantity) {
-            return redirect()->route('sales.create')->withErrors('Insufficient stock.');
+            return redirect()->route('sales.create')->withErrors('Insufficient amount.');
         }
 
         $totalPrice = $product->price * $request->quantity;
