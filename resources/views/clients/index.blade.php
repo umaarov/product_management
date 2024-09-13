@@ -1,18 +1,31 @@
 @extends('layouts.app')
-
+@vite('resources/css/clients/clients.css')
 @section('content')
     <h1>Clients</h1>
-    <a href="{{ route('clients.create') }}">Add Client</a>
-    <ul>
-        @foreach($clients as $client)
-            <li>{{ $client->name }} - {{ $client->contact }}
-                <a href="{{ route('clients.edit', $client->id) }}">Edit</a>
-                <form action="{{ route('clients.destroy', $client->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
-        @endforeach
-    </ul>
+    <a href="{{ route('clients.create') }}" class="add-client">Add Client</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($clients as $client)
+                <tr>
+                    <td>{{ $client->name }}</td>
+                    <td>{{ $client->contact }}</td>
+                    <td>
+                        <a href="{{ route('clients.edit', $client->id) }}" class="edit-btn">Edit</a>
+                        <form action="{{ route('clients.destroy', $client->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection

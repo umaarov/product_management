@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@vite('resources/css/clients/clients.css')
 @section('content')
     <h1>Edit Client</h1>
     <form action="{{ route('clients.update', $client->id) }}" method="POST">
