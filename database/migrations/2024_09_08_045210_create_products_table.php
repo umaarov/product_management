@@ -20,7 +20,6 @@ return new class extends Migration
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->timestamps();
 
-            // Foreign key relationships
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('set null');
         });

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->integer('quantity');
             $table->decimal('total_price', 8, 2);
-            $table->enum('status', ['completed', 'refunded', 'cancelled'])->default('completed'); // Sale status tracking
+            $table->enum('status', ['completed', 'refunded', 'cancelled'])->default('completed');
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
