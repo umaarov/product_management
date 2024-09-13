@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Product Management System</title>
+
+    @vite('resources/css/app.css')
 </head>
+
 <body>
     <nav>
         <a href="{{ route('categories.index') }}">Categories</a>
@@ -18,4 +22,5 @@
         @yield('content')
     </div>
 </body>
+
 </html>
