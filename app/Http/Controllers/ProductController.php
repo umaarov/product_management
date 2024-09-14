@@ -3,51 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where('quantity', '>', 0)
-            ->withoutTrashed()
-            ->with('category', 'supplier')
-            ->get();
+        $products = Product::with('category', 'suppliers')->get(); // Also fetch suppliers who provide the products
         return view('products.index', compact('products'));
     }
 
-    public function showSupplierProducts()
+    public function create()
     {
-        $supplierProducts = Product::withTrashed()->with('category', 'supplier')->get();
-        return view('products.supplierProducts', compact('supplierProducts'));
+        $categories = Category::all();
+        return view('products.create', compact('categories'));
     }
 
-    public function purchaseFromSupplier(Request $request, $productId)
+    public function store(Request $request)
     {
-        $product = Product::withTrashed()->findOrFail($productId);
-
         $request->validate([
-            'quantity' => 'required|integer|min:1',
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
         ]);
 
-        $totalCost = $product->price * $request->quantity;
-
-        if ($product->trashed()) {
-            $product->restore();
-        }
-
-        $product->update([
-            'quantity' => $product->quantity + $request->quantity,
+        Product::create([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'price' => $request->price,
         ]);
 
-        return redirect()->route('products.index')->with('success', "You purchased {$request->quantity} units of {$product->name}. Total cost: \${$totalCost}");
+        return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
     public function destroy(Product $product)
     {
-        $product->update(['quantity' => 0]);
         $product->delete();
-
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
 }

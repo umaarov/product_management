@@ -1,36 +1,36 @@
 @extends('layouts.app')
 @vite('resources/css/products/product.css')
-
 @section('content')
-    <h1>Purchased Products</h1>
-    <a href="{{ route('products.supplierProducts') }}" class="add-product">Get Product</a>
+    <div class="container">
+        <h1>Products</h1>
 
-    <table>
-        <thead>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Category</th>
-            <th>Supplier</th>
-            <th>Actions</th>
-        </thead>
-        <tbody>
-            @foreach ($products as $product)
+        <a href="{{ route('products.create') }}" class="add-product">Create Product</a>
+
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>{{ $product->name }}</td>
-                    <td>${{ $product->price }}</td>
-                    <td>{{ $product->quantity }}</td>
-                    <td>{{ $product->category->name }}</td>
-                    <td>{{ $product->supplier->name }}</td>
-                    <td>
-                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Suppliers</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($products as $product)
+                    <tr>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->category->name }}</td>
+                        <td>${{ number_format($product->price, 2) }}</td>
+                        <td>
+                            @foreach ($product->suppliers as $supplier)
+                                {{ $supplier->name }} (Quantity:
+                                {{ $supplier->pivot->quantity }})
+                                <br>
+                            @endforeach
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection

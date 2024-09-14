@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,7 @@ class SupplierController extends Controller
 {
     public function index()
     {
-        $suppliers = Supplier::with(['products' => function ($query) {
-            $query->withTrashed();
-        }, 'products.category'])->get();
+        $suppliers = Supplier::with('products')->get();
         return view('suppliers.index', compact('suppliers'));
     }
 
@@ -31,81 +30,44 @@ class SupplierController extends Controller
 
         Supplier::create($request->only(['name', 'email', 'phone']));
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully');
+        return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully.');
     }
 
-    public function edit(Supplier $supplier)
+    public function provideProductForm(Supplier $supplier)
     {
-        $products = $supplier->products()->withTrashed()->with('category')->get();
-        return view('suppliers.edit', compact('supplier', 'products'));
+        $products = Product::all();
+        return view('suppliers.provide_product', compact('supplier', 'products'));
     }
 
-
-    public function update(Request $request, Supplier $supplier)
+    public function storeProvidedProduct(Request $request, Supplier $supplier)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:suppliers,email,' . $supplier->id,
-            'phone' => 'required|string|max:15',
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
         ]);
 
-        $supplier->update($request->only(['name', 'email', 'phone']));
+        $existingProduct = $supplier->products()->where('product_id', $request->product_id)->first();
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully');
-    }
-
-    public function destroy(Supplier $supplier)
-    {
-        if ($supplier->products()->count() > 0) {
-            return redirect()->route('suppliers.index')->withErrors('Cannot delete supplier with associated products.');
+        if ($existingProduct) {
+            $newQuantity = $existingProduct->pivot->quantity + $request->quantity;
+            $supplier->products()->updateExistingPivot($request->product_id, ['quantity' => $newQuantity]);
+        } else {
+            $supplier->products()->attach($request->product_id, ['quantity' => $request->quantity]);
         }
 
-        $supplier->delete();
-
-        return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully');
+        return redirect()->route('suppliers.index')->with('success', 'Product provided by supplier successfully.');
     }
 
-    public function addProduct(Supplier $supplier)
-    {
-        $categories = Category::all();
-        return view('suppliers.add_product', compact('supplier', 'categories'));
-    }
-
-    public function storeProduct(Request $request, Supplier $supplier)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
-        ]);
-
-        $supplier->products()->create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'quantity' => 0,
-            'category_id' => $request->category_id,
-        ]);
-
-        return redirect()->route('suppliers.edit', $supplier->id)->with('success', 'Product added to supplier successfully');
-    }
 
     public function deleteProduct(Supplier $supplier, $productId)
     {
-        $product = $supplier->products()->withTrashed()->find($productId);
+        $product = $supplier->products()->find($productId);
 
         if (!$product) {
-            return redirect()->route('suppliers.edit', $supplier->id)
-                ->withErrors('Product not found.');
+            return redirect()->route('suppliers.index')->withErrors('Product not found.');
         }
 
-        if ($product->supplier_id !== $supplier->id) {
-            return redirect()->route('suppliers.edit', $supplier->id)
-                ->withErrors('Product does not belong to this supplier.');
-        }
-
-        $product->delete();
-
-        return redirect()->route('suppliers.edit', $supplier->id)
-            ->with('success', 'Product deleted successfully');
+        $supplier->products()->detach($productId);
+        return redirect()->route('suppliers.index')->with('success', 'Product removed from supplier.');
     }
 }

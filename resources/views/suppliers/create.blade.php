@@ -1,19 +1,39 @@
+<!-- resources/views/suppliers/create.blade.php -->
+
 @extends('layouts.app')
-@vite('resources/css/suppliers/supplier.css')
+
 @section('content')
-    <h1>Add Supplier</h1>
-    <form action="{{ route('suppliers.store') }}" method="POST">
-        @csrf
+    <div class="container">
+        <h1>Create Supplier</h1>
 
-        <label for="name">Supplier Name:</label>
-        <input type="text" name="name" id="name">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email">
+        <form method="POST" action="{{ route('suppliers.store') }}">
+            @csrf
+            <div class="form-group">
+                <label for="name">Supplier Name</label>
+                <input type="text" class="form-control" name="name" required>
+            </div>
 
-        <label for="phone">Phone:</label>
-        <input type="text" name="phone" id="phone">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
 
-        <button type="submit">Add Supplier</button>
-    </form>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" name="phone" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Supplier</button>
+        </form>
+    </div>
 @endsection

@@ -1,45 +1,41 @@
 @extends('layouts.app')
 @vite('resources/css/suppliers/supplier.css')
-
 @section('content')
-    <h1>Suppliers</h1>
-    <a href="{{ route('suppliers.create') }}" class="add-supplier">Add Supplier</a>
+    <div class="container">
+        <h1>Suppliers</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Products</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($suppliers as $supplier)
+        <a href="{{ route('suppliers.create') }}" class="add-supplier">Add Supplier</a>
+
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>{{ $supplier->name }}</td>
-                    <td>{{ $supplier->email }}</td>
-                    <td>
-                        @if ($supplier->products->isEmpty())
-                            <span>No products available</span>
-                        @else
-                            <ul>
-                                @foreach ($supplier->products as $product)
-                                    <li>{{ $product->name }} - ${{ $product->price }} ({{ $product->category->name }})</li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{ route('suppliers.edit', $supplier->id) }}" class="edit-btn">Edit</a>
-                        <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Products Provided</th>
+                    <th>Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($suppliers as $supplier)
+                    <tr>
+                        <td>{{ $supplier->name }}</td>
+                        <td>{{ $supplier->email }}</td>
+                        <td>{{ $supplier->phone }}</td>
+                        <td>
+                            @foreach ($supplier->products as $product)
+                                {{ $product->name }} (Quantity:
+                                {{ $product->pivot->quantity }})
+                                <br>
+                            @endforeach
+                        </td>
+                        <td>
+                            <a href="{{ route('suppliers.provideProductForm', $supplier->id) }}"
+                                class="btn btn-primary btn-sm">Provide Product</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection

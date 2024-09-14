@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price', 8, 2);
-            $table->integer('quantity');
+            $table->integer('quantity')->default(0);
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->timestamps();

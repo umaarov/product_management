@@ -27,5 +27,7 @@ Route::resource('suppliers', SupplierController::class);
 Route::get('/suppliers/{supplier}/add-product', [SupplierController::class, 'addProduct'])->name('suppliers.addProduct');
 Route::post('/suppliers/{supplier}/store-product', [SupplierController::class, 'storeProduct'])->name('suppliers.storeProduct');
 Route::delete('/suppliers/{supplier}/products/{product}', [SupplierController::class, 'deleteProduct'])->name('suppliers.deleteProduct');
+Route::get('suppliers/{supplier}/provide-product', [SupplierController::class, 'provideProductForm'])->name('suppliers.provideProductForm');
+Route::post('suppliers/{supplier}/provide-product', [SupplierController::class, 'storeProvidedProduct'])->name('suppliers.storeProvidedProduct');
 
 Route::resource('sales', SaleController::class);
