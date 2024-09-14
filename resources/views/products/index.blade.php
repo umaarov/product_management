@@ -3,7 +3,7 @@
 
 @section('content')
     <h1>Purchased Products</h1>
-    <a href="{{ route('products.supplierProducts') }}" class="btn btn-primary">Get Product</a>
+    <a href="{{ route('products.supplierProducts') }}" class="add-product">Get Product</a>
 
     <table>
         <thead>
