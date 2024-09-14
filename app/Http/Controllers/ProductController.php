@@ -9,13 +9,16 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where('quantity', '>', 0)->with('category', 'supplier')->get();
+        $products = Product::where('quantity', '>', 0)
+        ->withoutTrashed
+            ->with('category', 'supplier')
+            ->get();
         return view('products.index', compact('products'));
     }
 
     public function showSupplierProducts()
     {
-        $supplierProducts = Product::with('category', 'supplier')->get();
+        $supplierProducts = Product::withTrashed()->with('category', 'supplier')->get();
         return view('products.supplierProducts', compact('supplierProducts'));
     }
 
@@ -38,15 +41,5 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Product deleted successfully');
-    }
-
-    public function create()
-    {
-        abort(404, 'Direct product creation is not allowed. Please add a product via supplier.');
-    }
-
-    public function store(Request $request)
-    {
-        abort(404, 'Direct product creation is not allowed. Please add a product via supplier.');
     }
 }
