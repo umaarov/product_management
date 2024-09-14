@@ -44,10 +44,6 @@ th {
     color: white;
 }
 
-tr:hover {
-    background-color: #ddd;
-}
-
 button {
     background-color: #e74c3c;
     color: white;

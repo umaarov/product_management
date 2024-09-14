@@ -19,7 +19,7 @@
         <thead>
             <tr>
                 <th>Client</th>
-                <th>Total Sales ($)</th>
+                <th>Total Sales</th>
                 <th>Total Quantity Purchased</th>
             </tr>
         </thead>
@@ -39,7 +39,7 @@
         <thead>
             <tr>
                 <th>Product</th>
-                <th>Total Sales ($)</th>
+                <th>Total Sales</th>
                 <th>Total Quantity Sold</th>
             </tr>
         </thead>
