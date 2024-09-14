@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
     public function index()
     {
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::with('products.category')->get();
         return view('suppliers.index', compact('suppliers'));
     }
 
@@ -34,7 +35,8 @@ class SupplierController extends Controller
 
     public function edit(Supplier $supplier)
     {
-        return view('suppliers.edit', compact('supplier'));
+        $products = $supplier->products()->with('category')->get();
+        return view('suppliers.edit', compact('supplier', 'products'));
     }
 
     public function update(Request $request, Supplier $supplier)
@@ -78,10 +80,17 @@ class SupplierController extends Controller
         $supplier->products()->create([
             'name' => $request->name,
             'price' => $request->price,
-            'quantity' => 0, 
+            'quantity' => 0,
             'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('suppliers.index')->with('success', 'Product added to supplier successfully');
+        return redirect()->route('suppliers.edit', $supplier->id)->with('success', 'Product added to supplier successfully');
+    }
+
+    public function deleteProduct(Supplier $supplier, Product $product)
+    {
+        $product->delete();
+
+        return redirect()->route('suppliers.edit', $supplier->id)->with('success', 'Product deleted successfully');
     }
 }

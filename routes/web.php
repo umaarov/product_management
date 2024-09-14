@@ -26,5 +26,6 @@ Route::resource('clients', ClientController::class);
 Route::resource('suppliers', SupplierController::class);
 Route::get('/suppliers/{supplier}/add-product', [SupplierController::class, 'addProduct'])->name('suppliers.addProduct');
 Route::post('/suppliers/{supplier}/store-product', [SupplierController::class, 'storeProduct'])->name('suppliers.storeProduct');
+Route::delete('/suppliers/{supplier}/products/{product}', [SupplierController::class, 'deleteProduct'])->name('suppliers.deleteProduct');
 
 Route::resource('sales', SaleController::class);
