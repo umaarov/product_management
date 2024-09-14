@@ -12,16 +12,28 @@ class SaleController extends Controller
 {
     public function index()
     {
-        $sales = Sale::with('client', 'product')->get();
+        $sales = Sale::whereHas('product')
+            ->with(['product' => function ($query) {
+                $query->withTrashed();
+            }, 'client'])
+            ->get();
+
         return view('sales.index', compact('sales'));
     }
+
 
     public function create()
     {
         $clients = Client::all();
-        $products = Product::all();
+
+        $products = Product::where('quantity', '>', 0)
+            ->withTrashed()
+            ->get();
+
         return view('sales.create', compact('clients', 'products'));
     }
+
+
 
     public function store(Request $request)
     {
