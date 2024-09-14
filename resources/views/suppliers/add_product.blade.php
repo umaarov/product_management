@@ -1,6 +1,5 @@
 @extends('layouts.app')
-@vite('resources/css/suppliers/add_product.css')
-
+@vite('resources/css/suppliers/supplier.css')
 @section('content')
     <h1>Add Product for {{ $supplier->name }}</h1>
 

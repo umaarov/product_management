@@ -78,7 +78,7 @@ class SupplierController extends Controller
         $supplier->products()->create([
             'name' => $request->name,
             'price' => $request->price,
-            'quantity' => 0, // Since the product is initially added, we can set quantity to 0 or an initial value
+            'quantity' => 0, 
             'category_id' => $request->category_id,
         ]);
 

@@ -15,8 +15,11 @@ Route::get('/', function () {
 
 Route::resource('categories', CategoryController::class);
 
-Route::resource('products', ProductController::class);
-Route::post('/products/{product}/purchase', [ProductController::class, 'purchaseProduct'])->name('products.purchase');
+Route::resource('products', ProductController::class)->only(['index', 'edit', 'update', 'destroy']);
+Route::get('/products/suppliers', [ProductController::class, 'showSupplierProducts'])->name('products.supplierProducts');
+Route::post('/products/{product}/purchase-from-supplier', [ProductController::class, 'purchaseFromSupplier'])->name('products.purchaseFromSupplier');
+Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 
 Route::resource('clients', ClientController::class);
 

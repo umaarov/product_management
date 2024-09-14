@@ -1,32 +1,28 @@
 @extends('layouts.app')
 @vite('resources/css/products/product.css')
-
 @section('content')
-    <h1>Purchased Products</h1>
-    <a href="{{ route('products.supplierProducts') }}" class="btn btn-primary">Get Product</a>
+    <h1>Supplier Products</h1>
 
     <table>
         <thead>
             <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
             <th>Category</th>
+            <th>Price</th>
             <th>Supplier</th>
             <th>Actions</th>
         </thead>
         <tbody>
-            @foreach ($products as $product)
+            @foreach ($supplierProducts as $product)
                 <tr>
                     <td>{{ $product->name }}</td>
-                    <td>${{ $product->price }}</td>
-                    <td>{{ $product->quantity }}</td>
                     <td>{{ $product->category->name }}</td>
+                    <td>${{ $product->price }}</td>
                     <td>{{ $product->supplier->name }}</td>
                     <td>
-                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('products.purchaseFromSupplier', $product->id) }}" method="POST">
                             @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
+                            <input type="number" name="quantity" placeholder="Quantity" min="1" required>
+                            <button type="submit">Get</button>
                         </form>
                     </td>
                 </tr>
