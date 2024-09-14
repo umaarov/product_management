@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -58,5 +59,29 @@ class SupplierController extends Controller
         $supplier->delete();
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully');
+    }
+
+    public function addProduct(Supplier $supplier)
+    {
+        $categories = Category::all();
+        return view('suppliers.add_product', compact('supplier', 'categories'));
+    }
+
+    public function storeProduct(Request $request, Supplier $supplier)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $supplier->products()->create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'quantity' => 0, // Since the product is initially added, we can set quantity to 0 or an initial value
+            'category_id' => $request->category_id,
+        ]);
+
+        return redirect()->route('suppliers.index')->with('success', 'Product added to supplier successfully');
     }
 }

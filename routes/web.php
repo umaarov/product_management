@@ -14,7 +14,14 @@ Route::get('/', function () {
 });
 
 Route::resource('categories', CategoryController::class);
+
 Route::resource('products', ProductController::class);
+Route::post('/products/{product}/purchase', [ProductController::class, 'purchaseProduct'])->name('products.purchase');
+
 Route::resource('clients', ClientController::class);
+
 Route::resource('suppliers', SupplierController::class);
+Route::get('/suppliers/{supplier}/add-product', [SupplierController::class, 'addProduct'])->name('suppliers.addProduct');
+Route::post('/suppliers/{supplier}/store-product', [SupplierController::class, 'storeProduct'])->name('suppliers.storeProduct');
+
 Route::resource('sales', SaleController::class);

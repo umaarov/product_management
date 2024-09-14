@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @vite('resources/css/products/product.css')
+
 @section('content')
     <h1>Products</h1>
-    <a href="{{ route('products.create') }}" class="add-product">Add Product</a>
     <table>
         <thead>
             <th>Name</th>
@@ -15,12 +15,17 @@
         <tbody>
             @foreach ($products as $product)
                 <tr>
-                    <td> {{ $product->name }} </td>
-                    <td> ${{ $product->price }} </td>
-                    <td> {{ $product->quantity }} </td>
-                    <td> {{ $product->category->name }} </td>
-                    <td> {{ $product->supplier->name }} </td>
+                    <td>{{ $product->name }}</td>
+                    <td>${{ $product->price }}</td>
+                    <td>{{ $product->quantity }}</td>
+                    <td>{{ $product->category->name }}</td>
+                    <td>{{ $product->supplier->name }}</td>
                     <td>
+                        <form action="{{ route('products.purchase', $product->id) }}" method="POST">
+                            @csrf
+                            <input type="number" name="quantity" placeholder="Quantity" min="1">
+                            <button type="submit">Purchase</button>
+                        </form>
                         <a href="{{ route('products.edit', $product->id) }}">Edit</a>
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                             @csrf

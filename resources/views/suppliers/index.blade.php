@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @vite('resources/css/suppliers/supplier.css')
+
 @section('content')
     <h1>Suppliers</h1>
     <a href="{{ route('suppliers.create') }}" class="add-supplier">Add Supplier</a>
@@ -18,6 +19,8 @@
                     <td>{{ $supplier->email }}</td>
                     <td>
                         <a href="{{ route('suppliers.edit', $supplier->id) }}" class="edit-btn">Edit</a>
+                        <a href="{{ route('suppliers.addProduct', $supplier->id) }}" class="add-product-btn">Add Product</a>
+                        <!-- New button to add product -->
                         <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
