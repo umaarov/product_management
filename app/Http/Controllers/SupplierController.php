@@ -55,8 +55,12 @@ class SupplierController extends Controller
             $supplier->products()->attach($request->product_id, ['quantity' => $request->quantity]);
         }
 
+        $product = Product::find($request->product_id);
+        $product->increment('quantity', $request->quantity);
+
         return redirect()->route('suppliers.index')->with('success', 'Product provided by supplier successfully.');
     }
+
 
 
     public function deleteProduct(Supplier $supplier, $productId)

@@ -1,7 +1,5 @@
-<!-- resources/views/suppliers/create.blade.php -->
-
 @extends('layouts.app')
-
+@vite('resources/css/products/product.css')
 @section('content')
     <div class="container">
         <h1>Create Supplier</h1>

@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category', 'suppliers')->get(); // Also fetch suppliers who provide the products
+        $products = Product::with('category', 'suppliers')->get();
         return view('products.index', compact('products'));
     }
 
@@ -26,13 +26,12 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
+            'quantity' => 'nullable|integer|min:0'
         ]);
+        $productData = $request->only(['name', 'category_id', 'price']);
+        $productData['quantity'] = $request->quantity ?? 0;
 
-        Product::create([
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-            'price' => $request->price,
-        ]);
+        Product::create($productData);
 
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }

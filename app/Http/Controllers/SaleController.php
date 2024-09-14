@@ -26,7 +26,7 @@ class SaleController extends Controller
     {
         $clients = Client::all();
 
-        $products = Product::where('quantity', '>', 0)
+        $products = Product::where('quantity', '>=', 0)
             ->whereNull('deleted_at')
             ->get();
 

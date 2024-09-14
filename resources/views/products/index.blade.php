@@ -12,6 +12,7 @@
                     <th>Name</th>
                     <th>Category</th>
                     <th>Price</th>
+                    <th>Quantity</th>
                     <th>Suppliers</th>
                 </tr>
             </thead>
@@ -21,6 +22,7 @@
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->category->name }}</td>
                         <td>${{ number_format($product->price, 2) }}</td>
+                        <td>{{ $product->quantity }}</td>
                         <td>
                             @foreach ($product->suppliers as $supplier)
                                 {{ $supplier->name }} (Quantity:
