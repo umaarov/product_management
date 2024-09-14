@@ -22,7 +22,6 @@ class ProductController extends Controller
         return view('products.supplierProducts', compact('supplierProducts'));
     }
 
-
     public function purchaseFromSupplier(Request $request, $productId)
     {
         $product = Product::withTrashed()->findOrFail($productId);
@@ -44,10 +43,11 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', "You purchased {$request->quantity} units of {$product->name}. Total cost: \${$totalCost}");
     }
 
-
     public function destroy(Product $product)
     {
+        $product->update(['quantity' => 0]);
         $product->delete();
+
         return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
 }

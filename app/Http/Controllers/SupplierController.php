@@ -90,10 +90,23 @@ class SupplierController extends Controller
         return redirect()->route('suppliers.edit', $supplier->id)->with('success', 'Product added to supplier successfully');
     }
 
-    public function deleteProduct(Supplier $supplier, Product $product)
+    public function deleteProduct(Supplier $supplier, $productId)
     {
+        $product = $supplier->products()->withTrashed()->find($productId);
+
+        if (!$product) {
+            return redirect()->route('suppliers.edit', $supplier->id)
+                ->withErrors('Product not found.');
+        }
+
+        if ($product->supplier_id !== $supplier->id) {
+            return redirect()->route('suppliers.edit', $supplier->id)
+                ->withErrors('Product does not belong to this supplier.');
+        }
+
         $product->delete();
 
-        return redirect()->route('suppliers.edit', $supplier->id)->with('success', 'Product deleted successfully');
+        return redirect()->route('suppliers.edit', $supplier->id)
+            ->with('success', 'Product deleted successfully');
     }
 }
