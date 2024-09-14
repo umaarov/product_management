@@ -27,11 +27,12 @@ class SaleController extends Controller
         $clients = Client::all();
 
         $products = Product::where('quantity', '>', 0)
-            ->withTrashed()
+            ->whereNull('deleted_at')
             ->get();
 
         return view('sales.create', compact('clients', 'products'));
     }
+
 
     public function store(Request $request)
     {
