@@ -37,7 +37,7 @@ class SupplierController extends Controller
 
     public function edit(Supplier $supplier)
     {
-        $products = $supplier->products()->withTrashed()->with('category')->get(); // Include soft-deleted products
+        $products = $supplier->products()->withTrashed()->with('category')->get();
         return view('suppliers.edit', compact('supplier', 'products'));
     }
 

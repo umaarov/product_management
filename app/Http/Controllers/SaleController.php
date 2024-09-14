@@ -33,8 +33,6 @@ class SaleController extends Controller
         return view('sales.create', compact('clients', 'products'));
     }
 
-
-
     public function store(Request $request)
     {
         $request->validate([
