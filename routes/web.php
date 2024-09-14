@@ -18,5 +18,3 @@ Route::resource('products', ProductController::class);
 Route::resource('clients', ClientController::class);
 Route::resource('suppliers', SupplierController::class);
 Route::resource('sales', SaleController::class);
-Route::resource('returns', ReturnController::class);
-Route::resource('analytics', AnalyticsController::class);

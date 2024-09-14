@@ -10,7 +10,6 @@
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Total Price</th>
-                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -20,11 +19,6 @@
                     <td>{{ $sale->product->name }}</td>
                     <td>{{ $sale->quantity }}</td>
                     <td>${{ $sale->total_price }}</td>
-                    <td>
-                        @if ($sale->status === 'refunded')
-                            <span>(Refunded)</span>
-                        @endif
-                    </td>
                 </tr>
             @endforeach
         </tbody>

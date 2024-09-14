@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Client;
-use App\Models\Refund;
 use App\Models\Income;
 use Illuminate\Http\Request;
 
@@ -13,7 +12,7 @@ class SaleController extends Controller
 {
     public function index()
     {
-        $sales = Sale::with('client', 'product', 'refund')->get();
+        $sales = Sale::with('client', 'product')->get();
         return view('sales.index', compact('sales'));
     }
 
@@ -55,25 +54,5 @@ class SaleController extends Controller
         ]);
 
         return redirect()->route('sales.index')->with('success', 'Sale created successfully');
-    }
-
-    public function markRefunded(Sale $sale, Request $request)
-    {
-        if ($sale->refund) {
-            return redirect()->route('sales.index')->withErrors('This sale already has a refund.');
-        }
-
-        Refund::create([
-            'sale_id' => $sale->id,
-            'reason' => $request->reason,
-            'quantity' => $sale->quantity,
-        ]);
-
-        $product = $sale->product;
-        $product->increment('quantity', $sale->quantity);
-
-        $sale->update(['status' => 'refunded']);
-
-        return redirect()->route('sales.index')->with('success', 'Sale refunded successfully');
     }
 }
