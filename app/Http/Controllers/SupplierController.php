@@ -11,7 +11,9 @@ class SupplierController extends Controller
 {
     public function index()
     {
-        $suppliers = Supplier::with('products.category')->get();
+        $suppliers = Supplier::with(['products' => function ($query) {
+            $query->withTrashed();
+        }, 'products.category'])->get();
         return view('suppliers.index', compact('suppliers'));
     }
 
@@ -35,9 +37,10 @@ class SupplierController extends Controller
 
     public function edit(Supplier $supplier)
     {
-        $products = $supplier->products()->with('category')->get();
+        $products = $supplier->products()->withTrashed()->with('category')->get(); // Include soft-deleted products
         return view('suppliers.edit', compact('supplier', 'products'));
     }
+
 
     public function update(Request $request, Supplier $supplier)
     {
