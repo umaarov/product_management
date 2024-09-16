@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Client;
-use App\Models\Income;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -48,21 +47,7 @@ class SaleController extends Controller
             return redirect()->route('sales.create')->withErrors('Insufficient amount.');
         }
 
-        $totalPrice = $product->price * $request->quantity;
-
-        $sale = Sale::create([
-            'client_id' => $request->client_id,
-            'product_id' => $request->product_id,
-            'quantity' => $request->quantity,
-            'total_price' => $totalPrice,
-        ]);
-
         $product->decrement('quantity', $request->quantity);
-
-        Income::create([
-            'amount' => $totalPrice,
-            'sale_id' => $sale->id,
-        ]);
 
         return redirect()->route('sales.index')->with('success', 'Sale created successfully');
     }

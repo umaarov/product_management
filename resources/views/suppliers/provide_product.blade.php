@@ -19,7 +19,7 @@
                 <input type="number" class="form-control" name="quantity" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Provide Product</button>
+            <button type="submit">Provide Product</button>
         </form>
     </div>
 @endsection
